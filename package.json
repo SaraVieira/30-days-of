@@ -20,7 +20,8 @@
     "react-scripts": "4.0.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "urlify": "^0.3.6",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "zustand": "^3.3.1"
   },
   "scripts": {
     "start": "craco start",

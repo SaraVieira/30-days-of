@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-import AddChallengeForm from "./Components/AddChallengeForm";
-import isAdmin from "./utils/isAdmin";
+import AddChallengeForm from "../Components/AddChallengeForm";
+import Loading from "../Components/Loading";
+import isAdmin from "../utils/isAdmin";
+import { useStore } from "../store";
 
 function App() {
   const [addChallenge, setAddChallenge] = useState(false);
-  const [challenges, setChallenges] = useState([]);
-
-  const getInitial = async () => {
-    const rsp = await fetch("https://legitbackend.wtf/challenges").then((d) =>
-      d.json()
-    );
-
-    setChallenges(rsp);
-  };
+  const store = useStore();
   useEffect(() => {
-    getInitial();
+    store.getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -27,9 +22,11 @@ function App() {
             30 days of ...
           </span>
         </h1>
-        {challenges.length ? (
+        {!store.data ? (
+          <Loading />
+        ) : store.data.length ? (
           <ul class="space-y-3">
-            {challenges.map((ch) => (
+            {store.data.map((ch) => (
               <Link to={"/challenges/" + ch.name}>
                 <li class="bg-white shadow overflow-hidden rounded-md px-6 py-4  flex justify-between items-center mb-3">
                   <span class="capitalize">

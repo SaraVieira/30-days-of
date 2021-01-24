@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { useStore } from "../store";
 
-const AddEntry = ({ onSubmit, data }) => {
+const AddEntry = ({ onSubmit }) => {
   const [form, setFrom] = useState({
     name: "",
     description: "",
@@ -9,6 +10,7 @@ const AddEntry = ({ onSubmit, data }) => {
     sandbox: "",
   });
   const [showSandbox, setShowSandbox] = useState(false);
+  const store = useStore();
   const [showUrl, setShowUrl] = useState(false);
 
   var myWidget = window.cloudinary.createUploadWidget(
@@ -28,17 +30,7 @@ const AddEntry = ({ onSubmit, data }) => {
 
   const addEntry = async (e) => {
     e.preventDefault();
-    const newItem = {
-      ...data,
-      items: [...data.items, { ...form, date: new Date().toString() }],
-    };
-    await fetch(`${process.env.REACT_APP_API}${data.name}/${data._id}`, {
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "put",
-      body: JSON.stringify(newItem),
-    }).then((rsp) => rsp.json());
+    store.addEntry(form);
     onSubmit();
   };
   return (

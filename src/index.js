@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Home from "./Home";
-import Challenge from "./Challenge";
+import Home from "./Pages/Home";
+import Challenge from "./Pages/Challenge";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
