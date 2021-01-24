@@ -18,6 +18,7 @@ function Challenge() {
   };
   useEffect(() => {
     getInitial();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addEntry = async (e) => {
