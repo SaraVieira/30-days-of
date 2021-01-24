@@ -1,31 +1,18 @@
 import { useEffect, useState } from "react";
-import urlify from "urlify";
-import { parse, addMonths, format } from "date-fns";
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import { format } from "date-fns";
+import { useParams } from "react-router-dom";
+import isAdmin from "./utils/isAdmin";
+import AddEntry from "./Components/AddEntry";
 
 function Challenge() {
   const { name } = useParams();
   const [data, setData] = useState();
   const [showAdd, setShowAdd] = useState(false);
-  const [form, setFrom] = useState({ name: "", description: "" });
-  const [url, setUrl] = useState();
-
-  var myWidget = window.cloudinary.createUploadWidget(
-    {
-      cloudName: "nikkitaftw",
-      uploadPreset: "30days",
-    },
-    (error, result) => {
-      if (!error && result && result.event === "success") {
-        setUrl(result.info.url);
-      }
-    }
-  );
 
   const getInitial = async () => {
-    const rsp = await fetch(
-      "https://legitbackend.wtf/challenges/" + name
-    ).then((d) => d.json());
+    const rsp = await fetch(process.env.REACT_APP_API + name).then((d) =>
+      d.json()
+    );
 
     setData(rsp[0]);
   };
@@ -34,24 +21,6 @@ function Challenge() {
   }, []);
 
   const addEntry = async (e) => {
-    e.preventDefault();
-    const newItem = {
-      ...data,
-      items: data.items.concat({
-        ...form,
-        image: url,
-      }),
-    };
-    await fetch(
-      `https://legitbackend.wtf/challenges/${data.name}/${data._id}`,
-      {
-        headers: {
-          "content-type": "application/json",
-        },
-        method: "put",
-        body: JSON.stringify(newItem),
-      }
-    ).then((rsp) => rsp.json());
     setShowAdd(false);
     getInitial();
   };
@@ -63,7 +32,7 @@ function Challenge() {
       new Date().getMonth() === new Date(item.date).getMonth() &&
       new Date().getDay() === new Date(item.date).getDay()
     ) {
-      return true;
+      return false;
     }
 
     return false;
@@ -89,76 +58,16 @@ function Challenge() {
       <h3 className="text-center">
         Ends: {format(new Date(data.finalDate), "dd MMMM yyyy")}
       </h3>
-      {!todayExists ? (
+      {!todayExists && isAdmin() ? (
         <button
-          class="inline-flex items-center px-3 py-2 border mt-4 border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          class=" mt-6 flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           type="button"
           onClick={() => setShowAdd(true)}
         >
           Add Entry for {format(new Date(), "dd MMMM")}
         </button>
       ) : null}
-      {showAdd ? (
-        <form class="mt-4" onSubmit={addEntry}>
-          <div class="mb-2">
-            <label for="name" class="block text-sm font-medium text-gray-700">
-              Title
-            </label>
-            <div class="mt-1">
-              <input
-                value={form.name}
-                onChange={(e) =>
-                  setFrom((form) => ({
-                    ...form,
-                    name: e.target.value,
-                  }))
-                }
-                required
-                type="text"
-                name="name"
-                id="name"
-                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              />
-            </div>
-          </div>
-          <div class="mb-2">
-            <label for="name" class="block text-sm font-medium text-gray-700">
-              Description
-            </label>
-            <div class="mt-1">
-              <textarea
-                value={form.description}
-                onChange={(e) =>
-                  setFrom((form) => ({
-                    ...form,
-                    description: e.target.value,
-                  }))
-                }
-                name="name"
-                id="name"
-                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              />
-            </div>
-          </div>
-          {url ? (
-            "File Uploaded"
-          ) : (
-            <button
-              type="button"
-              onClick={() => myWidget.open()}
-              class="cloudinary-button"
-            >
-              Upload files
-            </button>
-          )}
-          <button
-            type="submit"
-            class="flex items-center px-3 py-2 border mt-4 border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Add Entry
-          </button>
-        </form>
-      ) : null}
+      {showAdd ? <AddEntry onSubmit={addEntry} data={data} /> : null}
 
       {data.items.length ? (
         <ul class="space-y-3 mt-10">
@@ -173,7 +82,9 @@ function Challenge() {
                 </span>
               </div>
               {ch.description && <p className="mb-2">{ch.description}</p>}
-              <img src={ch.image} alt={ch.name} />
+              {ch.image.map((image) => (
+                <img src={image} alt={ch.name} />
+              ))}
             </li>
           ))}
         </ul>
