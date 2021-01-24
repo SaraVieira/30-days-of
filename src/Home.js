@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { format } from "date-fns";
 import AddChallengeForm from "./Components/AddChallengeForm";
 import isAdmin from "./utils/isAdmin";
 
@@ -28,11 +29,20 @@ function App() {
       {challenges.length ? (
         <ul class="space-y-3">
           {challenges.map((ch) => (
-            <li class="bg-white shadow overflow-hidden rounded-md px-6 py-4 capitalize">
-              <Link to={"/challenges/" + ch.name}>
+            <Link to={"/challenges/" + ch.name}>
+              <li class="bg-white shadow overflow-hidden rounded-md px-6 py-4 capitalize flex justify-between items-center mb-3">
                 {ch.name.split("-").join(" ")}
-              </Link>
-            </li>
+
+                <div>
+                  <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium text-indigo-600">
+                    Started on {format(new Date(ch.date), "dd MMMM")}
+                  </span>
+                  <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                    {ch.items.length} entr{ch.items.length === 1 ? "y" : "ies"}
+                  </span>
+                </div>
+              </li>
+            </Link>
           ))}
         </ul>
       ) : null}

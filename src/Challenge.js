@@ -71,7 +71,7 @@ function Challenge() {
 
       {data.items.length ? (
         <ul class="space-y-3 mt-10">
-          {data.items.map((ch) => (
+          {data.items.reverse().map((ch) => (
             <li class="bg-white shadow overflow-hidden rounded-md px-6 py-4 capitalize">
               <div class="flex items-center justify-between mb-2">
                 <h6 class="text-lg leading-6 font-medium text-gray-900">
