@@ -45,12 +45,16 @@ function App() {
             </Link>
           ))}
         </ul>
-      ) : null}
+      ) : (
+        <h2 className="text-center text-gray-800">
+          You have no challenges, start one
+        </h2>
+      )}
       {isAdmin() && (
         <button
           onClick={() => setAddChallenge(true)}
           type="button"
-          class=" mt-6 flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          class="m-auto mt-6 flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Add new challenge
         </button>
