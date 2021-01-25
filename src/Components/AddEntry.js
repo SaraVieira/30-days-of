@@ -15,8 +15,8 @@ const AddEntry = ({ onSubmit }) => {
 
   var myWidget = window.cloudinary.createUploadWidget(
     {
-      cloudName: "nikkitaftw",
-      uploadPreset: "30days",
+      cloudName: process.env.REACT_APP_CLOUD_NAME,
+      uploadPreset: process.env.REACT_APP_PRESET,
     },
     (error, result) => {
       if (!error && result && result.event === "success") {
