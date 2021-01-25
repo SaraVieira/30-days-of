@@ -87,7 +87,11 @@ function Challenge() {
                     {ch.description && <p className="mb-2">{ch.description}</p>}
                     {ch.image.length
                       ? ch.image.map((image) => (
-                          <img src={image} alt={ch.name} />
+                          <img
+                            src={image}
+                            className="m-auto block mb-2"
+                            alt={ch.name}
+                          />
                         ))
                       : null}
                     {ch.url ? (
