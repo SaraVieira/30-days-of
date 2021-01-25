@@ -18,7 +18,7 @@ function Challenge() {
 
   const addEntry = async (e) => {
     setShowAdd(false);
-    store.getChallenge(name);
+    store.refetchChallenge(name);
   };
 
   const todayExists =

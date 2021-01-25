@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { addMonths } from "date-fns";
+
 import { useNavigate } from "react-router-dom";
 import urlify from "urlify";
+import { useStore } from "../store";
 
 var clean = urlify.create({
   addEToUmlauts: true,
@@ -18,6 +19,7 @@ const toDateInputValue = () => {
 };
 const AddChallengeForm = () => {
   let navigate = useNavigate();
+  const store = useStore();
   const [data, setData] = useState({
     name: "",
     date: toDateInputValue(),
@@ -26,23 +28,10 @@ const AddChallengeForm = () => {
   const submit = async (e) => {
     e.preventDefault();
     const name = clean(data.name.toLowerCase());
-    const challenge = {
-      name,
-      date: new Date(data.date),
-      finalDate: addMonths(new Date(data.date), 1),
-      items: [],
-    };
-
-    await fetch(process.env.REACT_APP_API + name, {
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "post",
-      body: JSON.stringify(challenge),
-    }).then((rsp) => rsp.json());
-
+    await store.addChallenge(name, data);
     navigate("/challenges/" + name);
   };
+
   return (
     <form class="mt-6" onSubmit={submit}>
       <div class="mb-2">

@@ -51,7 +51,7 @@ function App() {
             You have no challenges, start one
           </h2>
         )}
-        {isAdmin() && (
+        {isAdmin() && store.data && (
           <button
             onClick={() => setAddChallenge(true)}
             type="button"

@@ -30,9 +30,10 @@ const AddEntry = ({ onSubmit }) => {
 
   const addEntry = async (e) => {
     e.preventDefault();
-    store.addEntry(form);
+    await store.addEntry(form);
     onSubmit();
   };
+
   return (
     <form class="mt-4" onSubmit={addEntry}>
       <div class="mb-2">
