@@ -101,7 +101,7 @@ function Challenge() {
                     ) : null}
                     {ch.sandbox ? (
                       <iframe
-                        src={`https://codesandbox.io/embed/${ch.sandbox}?fontsize=14&hidenavigation=1&theme=dark`}
+                        src={`https://codesandbox.io/embed/${ch.sandbox}?fontsize=14&hidenavigation=1&theme=dark&view=preview`}
                         style={{
                           width: "100%",
                           height: 500,
