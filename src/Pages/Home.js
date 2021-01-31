@@ -27,7 +27,7 @@ function App() {
         ) : store.data.length ? (
           <ul class="space-y-3">
             {store.data.map((ch) => (
-              <Link to={"/challenges/" + ch.name}>
+              <Link to={"/challenges/" + ch.name} state={{ id: ch._id }}>
                 <li class="bg-white shadow overflow-hidden rounded-md px-6 py-4  flex justify-between items-center mb-3">
                   <span class="capitalize">
                     {" "}

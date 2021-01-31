@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useStore } from "../store";
-
+const toDateInputValue = () => {
+  var local = new Date();
+  local.setMinutes(local.getMinutes() - local.getTimezoneOffset());
+  return local.toJSON().slice(0, 10);
+};
 const AddEntry = ({ onSubmit }) => {
   const [form, setFrom] = useState({
     name: "",
@@ -8,6 +12,7 @@ const AddEntry = ({ onSubmit }) => {
     url: "",
     image: [],
     sandbox: "",
+    date: toDateInputValue(),
   });
   const [showSandbox, setShowSandbox] = useState(false);
   const store = useStore();
@@ -73,6 +78,28 @@ const AddEntry = ({ onSubmit }) => {
             name="name"
             id="name"
             class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+          />
+        </div>
+      </div>
+      <div class="mb-2">
+        <label for="date" class="block text-sm font-medium text-gray-700">
+          Date
+        </label>
+        <div class="mt-1">
+          <input
+            required
+            value={form.date}
+            onChange={(e) =>
+              setFrom((data) => ({
+                ...data,
+                date: e.target.value,
+              }))
+            }
+            type="date"
+            name="date"
+            id="date"
+            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+            placeholder="you@example.com"
           />
         </div>
       </div>
