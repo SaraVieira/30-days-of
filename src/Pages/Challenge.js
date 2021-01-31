@@ -21,19 +21,6 @@ function Challenge() {
     store.refetchChallenge(name);
   };
 
-  const todayExists =
-    store.currentPageData &&
-    store.currentPageData.items.find((item) => {
-      if (
-        new Date().getMonth() === new Date(item.date).getMonth() &&
-        new Date().getDay() === new Date(item.date).getDay()
-      ) {
-        return false;
-      }
-
-      return false;
-    });
-
   return (
     <div class="bg-gray-100 ">
       <main class="mb-12 max-w-6xl mx-auto sm:px-6 lg:px-20 pt-8 bg-gray-100 h-full">
@@ -61,7 +48,7 @@ function Challenge() {
                 "dd MMMM yyyy"
               )}
             </h3>
-            {!todayExists && isAdmin() ? (
+            {isAdmin() ? (
               <button
                 class=" mt-6 flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 type="button"

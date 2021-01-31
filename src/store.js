@@ -2,6 +2,18 @@ import create from "zustand";
 import { addMonths } from "date-fns";
 
 const call = () => fetch(process.env.REACT_APP_API).then((d) => d.json());
+
+const getOrderedData = async (name) => {
+  const rsp = await call();
+  const pageData = rsp.find((a) => a.name === name);
+  const ordered = {
+    ...pageData,
+    items: pageData.items.sort((a, b) => new Date(a.date) - new Date(b.date)),
+  };
+
+  return { rsp, ordered };
+};
+
 export const useStore = create((set, get) => ({
   data: null,
   currentPageData: null,
@@ -11,10 +23,9 @@ export const useStore = create((set, get) => ({
   },
   getChallenge: async (name) => {
     const data = get().data;
-
+    const { rsp, ordered } = await getOrderedData(name);
     if (!data || !data.find((item) => item.name === name)) {
-      const rsp = await call();
-      set({ data: rsp, currentPageData: rsp.find((a) => a.name === name) });
+      set({ data: rsp, currentPageData: ordered });
 
       return;
     }
@@ -22,9 +33,8 @@ export const useStore = create((set, get) => ({
     set({ currentPageData: data.find((a) => a.name === name) });
   },
   refetchChallenge: async (name) => {
-    const rsp = await call();
-    console.log(rsp);
-    set({ data: rsp, currentPageData: rsp.find((a) => a.name === name) });
+    const { rsp, ordered } = await getOrderedData(name);
+    set({ data: rsp, currentPageData: ordered });
   },
   addEntry: async (form) => {
     const currentPageData = get().currentPageData;
