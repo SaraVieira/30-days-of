@@ -61,7 +61,7 @@ function Challenge() {
 
             {store.currentPageData.items.length ? (
               <ul class="space-y-3 mt-10">
-                {store.currentPageData.items.reverse().map((ch) => (
+                {store.currentPageData.items.map((ch) => (
                   <li class="bg-white shadow overflow-hidden rounded-md px-6 py-4 ">
                     <div class="flex items-center justify-between mb-2">
                       <h6 class="text-lg leading-6 font-medium text-gray-900 capitalize">

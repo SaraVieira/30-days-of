@@ -15,7 +15,7 @@ export const getOrderedData = async (name) => {
   const pageData = rsp.find((a) => a.name === name);
   const ordered = {
     ...pageData,
-    items: pageData.items.sort((a, b) => new Date(a.date) - new Date(b.date)),
+    items: pageData.items.sort((a, b) => new Date(b.date) - new Date(a.date)),
   };
 
   return { rsp, ordered };
