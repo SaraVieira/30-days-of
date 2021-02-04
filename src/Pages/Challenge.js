@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import isAdmin from "../utils/isAdmin";
 import AddEntry from "../Components/AddEntry";
 import Loading from "../Components/Loading";
